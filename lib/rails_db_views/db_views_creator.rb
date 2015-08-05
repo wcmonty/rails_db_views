@@ -15,7 +15,7 @@ class RailsDbViews::DbViewsCreator
       # Reject the commented lines from the file
       sql_content = content_lines.reject{ |x| x.strip =~ /^--/ || x.strip =~ /^#/ }.join("\n")
 
-      file_obj = { path: file, sql_content: sql_content, status: :none, requires: [] }
+      file_obj = { :path => file, :sql_content => sql_content, :status => :none, :requires => [] }
 
       # Detect directives in commentary
       directives = content_lines.select{ |x| x.strip =~ /^--/ || x.strip =~ /^#/ }.map(&:strip).map{ |x| 
