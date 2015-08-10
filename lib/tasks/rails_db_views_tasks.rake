@@ -35,10 +35,22 @@ end
 before "db:rollback" do
   Rake::Task['db:drop_views'].invoke
 end
+before "db:test:load" do
+  Rake::Task['db:drop_views'].invoke
+end
+before "db:test:prepare" do
+  Rake::Task['db:drop_views'].invoke
+end
 
 after "db:migrate" do
   Rake::Task['db:create_views'].invoke
 end
 after "db:rollback" do
+  Rake::Task['db:create_views'].invoke
+end
+after "db:test:load" do
+  Rake::Task['db:create_views'].invoke
+end
+after "db:test:prepare" do
   Rake::Task['db:create_views'].invoke
 end
