@@ -25,32 +25,28 @@ namespace :db do
 
     creator.drop_views
   end
+
+  task :migrate => :environment do
+    Rake::Task['db:create_views'].invoke
+  end
+
+  task :rollback => :environment do
+    Rake::Task['db:create_views'].invoke
+  end
+
+  namespace :test do
+    task :load => :environment do
+      Rake::Task['db:create_views'].invoke
+    end
+
+    task :prepare => :environment do
+      Rake::Task['db:create_views'].invoke
+    end
+  end
 end
 
-require 'rake/hooks'
-
-before "db:migrate" do
-  Rake::Task['db:drop_views'].invoke
-end
-before "db:rollback" do
-  Rake::Task['db:drop_views'].invoke
-end
-before "db:test:load" do
-  Rake::Task['db:drop_views'].invoke
-end
-before "db:test:prepare" do
-  Rake::Task['db:drop_views'].invoke
-end
-
-after "db:migrate" do
-  Rake::Task['db:create_views'].invoke
-end
-after "db:rollback" do
-  Rake::Task['db:create_views'].invoke
-end
-after "db:test:load" do
-  Rake::Task['db:create_views'].invoke
-end
-after "db:test:prepare" do
-  Rake::Task['db:create_views'].invoke
-end
+# Before
+Rake::Task['db:migrate'].enhance(['db:drop_views'])
+Rake::Task['db:rollback'].enhance(['db:drop_views'])
+Rake::Task['db:test:load'].enhance(['db:drop_views'])
+Rake::Task['db:test:prepare'].enhance(['db:drop_views'])
