@@ -1,6 +1,4 @@
 class Railtie < Rails::Railtie
-  railtie_name :rails_db_views
-
   config.rails_db_views = ActiveSupport::OrderedHash.new
 
   initializer "rails_db_views.initialize" do |app|
