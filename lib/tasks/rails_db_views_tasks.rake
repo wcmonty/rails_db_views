@@ -34,6 +34,12 @@ namespace :db do
     Rake::Task['db:create_views'].invoke
   end
 
+  namespace :schema do
+    task :load => :environment do
+      Rake::Task['db:create_views'].invoke
+    end
+  end
+
   namespace :test do
     task :load => :environment do
       Rake::Task['db:create_views'].invoke
@@ -48,5 +54,6 @@ end
 # Before
 Rake::Task['db:migrate'].enhance(['db:drop_views'])
 Rake::Task['db:rollback'].enhance(['db:drop_views'])
+Rake::Task['db:schema:load'].enhance(['db:drop_views'])
 Rake::Task['db:test:load'].enhance(['db:drop_views'])
 Rake::Task['db:test:prepare'].enhance(['db:drop_views'])
